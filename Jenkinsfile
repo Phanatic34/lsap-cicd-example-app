@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -20,32 +21,28 @@ pipeline {
             }
         }
 
-        stage('Start server (dev only)') {
-            when {
-                branch 'feat/time'
-            }
+        // Start server for all branches (dev / feat/time)
+        stage('Start server') {
             steps {
                 sh 'node server.js &'
             }
         }
 
-        // 🚀 deploy to server after tests pass
+        // 🚀 Deploy only on dev branch
         stage('Deploy') {
             when {
-                branch 'main'
+                branch 'dev'
             }
             steps {
                 sshagent(credentials: ['jenkins']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no classuser@localhost "
-                            cd ~/lsap-cicd-example-app &&
-                            git pull origin main &&
-                            pm2 restart server 2>/dev/null || pm2 start server.js --name server
-                        "
+                    docker stop lsap-app || true
+                    docker rm lsap-app || true
+                    docker build -t lsap-app .
+                    docker run -d -p 8081:3000 --name lsap-app lsap-app
                     '''
                 }
             }
         }
     }
 }
-
