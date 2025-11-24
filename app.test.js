@@ -19,11 +19,15 @@ afterAll((done) => {
   server.close(done);
 });
 
-describe("API Endpoints", () => {
-  it("should return a 200 OK status and welcome message for the root endpoint", async () => {
-    // Test against the running server
-    const res = await request(server).get("/");
-    expect(res.statusCode).toEqual(200);
-    expect(res.text).toContain("Welcome to the CI/CD Workshop!");
+describe("GET /time", () => {
+  it("should return a valid ISO timestamp", async () => {
+    const res = await request(server).get("/time");
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("time");
+    expect(typeof res.body.time).toBe("string");
+
+    // validate ISO timestamp
+    expect(() => new Date(res.body.time)).not.toThrow();
   });
 });
