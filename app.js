@@ -1,22 +1,20 @@
-<<<<<<< HEAD
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
-});
-=======
+// app.js
 const express = require("express");
 const app = express();
 
+// Root endpoint
 app.get("/", (req, res) => {
-  res
-    .status(200)
-    .send("<h1>Welcome to the CI/CD Workshop!</h1>");
+  res.status(200).send("Welcome to the CI/CD Workshop!");
 });
 
-// ADD THIS
+// /time endpoint
 app.get("/time", (req, res) => {
-  const now = new Date().toISOString();
-  res.status(200).json({ time: now });
+  res.json({ time: new Date().toISOString() });
+});
+
+// /health endpoint
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
 });
 
 module.exports = app;
->>>>>>> feat/time
