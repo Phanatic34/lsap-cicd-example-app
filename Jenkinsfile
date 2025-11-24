@@ -1,22 +1,29 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs "NodeJS-18"   // must match the name in Jenkins → Manage Jenkins → Tools
-    }
-
     stages {
-        stage('Install') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install dependencies') {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Test') {
+        stage('Run tests') {
             steps {
                 sh 'npm test'
             }
         }
+
+        stage('Start server') {
+            steps {
+                sh 'node server.js &'
+            }
+        }
     }
 }
-
