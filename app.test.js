@@ -22,7 +22,7 @@ describe("GET /", () => {
   it("should return a welcome message", async () => {
     const res = await request(server).get("/");
     expect(res.statusCode).toBe(200);
-    expect(res.text).toContain("Welcome to the CI/CD Workshop!");
+    expect(res.text).toContain("Welcome DEV demo v2!");
   });
 });
 
