@@ -103,7 +103,15 @@ pipeline {
           set -e
           docker rm -f prod-app || true
           docker run -d --name prod-app -p ${PROD_PORT}:${APP_PORT} ${DOCKER_IMAGE}:prod-${BUILD_NUMBER}
-          curl -fsS http://localhost:${PROD_PORT}/health
+          for i in $(seq 1 30); do
+          if curl -fsS http://localhost:${PROD_PORT}/health; then
+            echo "prod health OK"
+            exit 0
+          fi
+          sleep 1
+        done
+        echo "prod health check failed"
+        exit 1
         '''
       }
     }
