@@ -18,3 +18,5 @@ app.get("/health", (req, res) => {
 });
 
 module.exports = app;
+
+const __lintFail = 123;
