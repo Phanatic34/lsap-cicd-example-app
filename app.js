@@ -4,7 +4,7 @@ const app = express();
 
 // Root endpoint
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to the CI/CD Workshop!");
+  res.status(200).send("Welcome DEV demo v1!");
 });
 
 // /time endpoint
